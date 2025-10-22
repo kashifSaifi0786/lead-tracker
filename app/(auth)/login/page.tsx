@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/lib/Axios";
-import { useAuthStore } from "@/lib/store";
+import { useAuthStore } from "@/lib/store/authStore";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ export default function LoginPage() {
     setErrorMsg("");
     try {
       const res = await api.post("/auth/login", data);
-      login({ user: res.data.user, token: res.data.token });
+      login(res.data.user, res.data.token);
       router.push("/dashboard");
     } catch (err) {
       setErrorMsg(err.response?.data?.message || "Login failed");
@@ -49,7 +49,7 @@ export default function LoginPage() {
       <Card className="w-[380px] p-6 shadow-2xl backdrop-blur-lg bg-white/90 rounded-2xl">
         <CardContent>
           <h2 className="text-2xl font-bold text-center mb-4 text-gray-800">
-            Welcome Back 👋
+            Welcome Back
           </h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
