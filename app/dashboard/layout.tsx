@@ -5,7 +5,6 @@ import { useAuthStore } from "@/lib/store/authStore";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 
 export default function DashboardLayout({
   children,
