@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import { AxiosError } from "axios";
 
 const schema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -16,6 +17,8 @@ const schema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
   phone: z.string().min(10, "Invalid phone number"),
 });
+
+type SignupFormData = z.infer<typeof schema>;
 
 export default function SignupPage() {
   const router = useRouter();
@@ -31,7 +34,7 @@ export default function SignupPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: SignupFormData) => {
     setLoading(true);
     setErrorMsg("");
     setSuccess(false);
@@ -40,7 +43,8 @@ export default function SignupPage() {
       setSuccess(true);
       setTimeout(() => router.push("/login"), 1200);
     } catch (err) {
-      setErrorMsg(err.response?.data?.message || "Signup failed");
+      const error = err as AxiosError<{ message?: string }>;
+      setErrorMsg(error.response?.data?.message || "Signup failed");
     } finally {
       setLoading(false);
     }

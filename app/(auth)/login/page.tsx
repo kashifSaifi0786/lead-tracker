@@ -10,6 +10,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import { AxiosError } from "axios";
+
+interface LoginFormData {
+  email: string;
+  password: string;
+}
 
 const schema = z.object({
   email: z.string().email("Invalid email"),
@@ -30,7 +36,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: LoginFormData) => {
     setLoading(true);
     setErrorMsg("");
     try {
@@ -38,7 +44,8 @@ export default function LoginPage() {
       login(res.data.user, res.data.token);
       router.push("/dashboard");
     } catch (err) {
-      setErrorMsg(err.response?.data?.message || "Login failed");
+      const error = err as AxiosError<{ message?: string }>;
+      setErrorMsg(error.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }

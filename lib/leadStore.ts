@@ -14,7 +14,7 @@ interface Lead {
 interface LeadState {
   leads: Lead[];
   loading: boolean;
-  fetchLeads: () => Promise<void>;
+  fetchLeads: (params?: { search?: string }) => Promise<void>;
   addLead: (leadData: Partial<Lead>) => Promise<void>;
   assignLead: (leadId: string, userId: string) => Promise<void>;
   deleteLead: (leadId: string) => Promise<void>;

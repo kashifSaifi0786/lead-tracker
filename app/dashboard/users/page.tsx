@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 interface User {
   _id: string;
@@ -70,7 +71,8 @@ export default function UsersPage() {
       await apiClient.delete(`/users/${id}`);
       toast.success("User deleted successfully");
       fetchUsers(); // refresh list
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message?: string }>;
       toast.error(error.response?.data?.message || "Failed to delete user");
     }
   };
