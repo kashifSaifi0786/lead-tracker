@@ -107,7 +107,7 @@ export default function UsersPage() {
                     <TableCell>
                       <Button
                         variant="destructive"
-                        onClick={() => handleDelete(user._id)}
+                        onClick={() => handleDelete(u._id)}
                         className="ml-2"
                       >
                         Delete
