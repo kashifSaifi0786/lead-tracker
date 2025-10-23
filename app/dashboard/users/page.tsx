@@ -33,7 +33,6 @@ interface User {
 }
 
 export default function UsersPage() {
-  useAuthRedirect();
   const { user } = useAuthStore();
   const [activeUsers, setActiveUsers] = useState<User[]>([]);
   const [inactiveUsers, setInactiveUsers] = useState<User[]>([]);
