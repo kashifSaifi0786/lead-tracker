@@ -6,28 +6,27 @@ import { useAuthStore } from "@/lib/store/authStore";
 import api from "@/lib/Axios";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Users, BarChart, Zap } from "lucide-react";
+import apiClient from "@/lib/apiClient";
 
 interface Stats {
   totalUsers: number;
   totalLeads: number;
-  activeLeads: number;
+  activeUsers: number;
 }
 
 export default function DashboardPage() {
   const { token } = useAuthStore();
   const [stats, setStats] = useState<Stats>({
     totalUsers: 0,
+    activeUsers: 0,
     totalLeads: 0,
-    activeLeads: 0,
   });
 
   // Fetch dashboard stats
   const fetchStats = async () => {
     try {
-      const res = await api.get("/dashboard/stats", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setStats(res.data);
+      const { data } = await apiClient.get("/dashboard/stats");
+      setStats(data.data);
     } catch (err) {
       console.error("Failed to fetch stats:", err);
     }
@@ -45,16 +44,16 @@ export default function DashboardPage() {
       color: "text-indigo-600",
     },
     {
-      title: "Total Leads",
-      value: stats.totalLeads,
+      title: "Active Users",
+      value: stats.activeUsers,
       icon: BarChart,
-      color: "text-green-600",
+      color: "text-yellow-600",
     },
     {
-      title: "Active Leads",
-      value: stats.activeLeads,
+      title: "Total Leads",
+      value: stats.totalLeads,
       icon: Zap,
-      color: "text-yellow-600",
+      color: "text-green-600",
     },
   ];
 
