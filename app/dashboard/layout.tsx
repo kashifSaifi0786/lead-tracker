@@ -15,14 +15,14 @@ export default function DashboardLayout({
   //   useAuthRedirect();
   const { logout } = useAuthStore();
 
-  const token = localStorage.getItem("token");
   const router = useRouter();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     if (!token) {
       router.push("/login");
     }
-  }, [token, router]);
+  }, [router]);
 
   const handleLogout = () => {
     logout();
